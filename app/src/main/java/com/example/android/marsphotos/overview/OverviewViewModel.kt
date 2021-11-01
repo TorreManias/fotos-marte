@@ -32,8 +32,8 @@ class OverviewViewModel : ViewModel() {
     // The internal MutableLiveData that stores the status of the most recent request
     private val _status = MutableLiveData<String>()
 
-    private val _fotos = MutableLiveData<MarsPhoto>()
-    val fotos: LiveData<MarsPhoto> = _fotos
+    private val _fotos = MutableLiveData<List<MarsPhoto>>()
+    val fotos: LiveData<List<MarsPhoto>> = _fotos
 
     // The external immutable LiveData for the request status
     val status: LiveData<String> = _status
@@ -51,8 +51,8 @@ class OverviewViewModel : ViewModel() {
     private fun getMarsPhotos() {
         viewModelScope.launch {
             try {
-                _fotos.value = MarsApi.retrofitService.obtenerFotos()[0]
-                _status.value = "URL de la priemra foto: ${_fotos.value!!.imgSrcUrl}"
+                _fotos.value = MarsApi.retrofitService.obtenerFotos()
+                _status.value = "Se han recibido las propiedades de Marte"
             } catch (e: Exception) {
                 _status.value = "Falla: ${e.message}"
             }
